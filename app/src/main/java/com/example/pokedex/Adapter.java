@@ -1,12 +1,17 @@
 package com.example.pokedex;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +24,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CustomViewHolder> {
 
     // It is helpful to have variable for context because `this` really only works when calling stuff from within Activities
     private Context context;
-    List<Integer> data;
+    List<Pokemon> data;
 
     // Adapter construtor, whenever we make a new adapter from this class we need to pass in a context and the data that we want to bind
-    Adapter(Context context, ArrayList<Integer> data) {
+    Adapter(Context context, ArrayList<Pokemon> data) {
         this.context = context;
         this.data = data;
     }
@@ -41,7 +46,20 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CustomViewHolder> {
     // Updates the `RecyclerView.ViewHolder` contents with the item at the given position (from your data)
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int i) {
-        customViewHolder.number.setText((data.get(i)).toString());
+        customViewHolder.name.setText(data.get(i).name);
+
+        String[] parts = data.get(i).name.split(" ");
+        String query = parts[0];
+        if (parts.length > 1 && parts[1].equals("(")) query = String.format("%s-%s", query, parts[2]);
+        String url = String.format("http://img.pokemondb.net/artwork/%s.jpg",query).toLowerCase();
+        ImageView itemView = customViewHolder.image;
+        Glide.with(itemView)  //2
+                .load(url) //3
+                .centerCrop() //4
+                .placeholder(R.drawable.pokeball) //5
+                .error(R.drawable.pokeball) //6
+                .fallback(R.drawable.pokeball) //7
+                .into(itemView); //8
     }
 
     // Must be overriden to explicitly tell your Recycler how much data to allocate space for (number of rows)
@@ -52,11 +70,43 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CustomViewHolder> {
 
     // This describes the item view and meta data about its place within the recycler view, think of this as looking at one row and linking the relevant stuff from xml
     class CustomViewHolder extends RecyclerView.ViewHolder {
-        TextView number;
+        TextView name;
+        ImageView image;
 
         CustomViewHolder(@NonNull View itemView) {
             super(itemView);
-            number = itemView.findViewById(R.id.number);
+            name = itemView.findViewById(R.id.poke_name);
+            image = itemView.findViewById(R.id.poke_image);
+            itemView.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, PokeInfo.class);
+
+                    MainActivity mainActivity = ((MainActivity) context);
+                    int idx = mainActivity.findIndexName(name.getText().toString());
+                    if (idx == -1) Log.d("e", "index should not be -1");
+
+                    Pokemon p = mainActivity.list.get(idx);
+                    intent.putExtra("name", p.name);
+                    intent.putExtra("number", p.number);
+                    intent.putExtra("attack", p.attack);
+                    intent.putExtra("defense", p.defense);
+                    intent.putExtra("flavorText", p.flavorText);
+                    intent.putExtra("hp", p.hp);
+                    intent.putExtra("sp_atk", p.sp_atk);
+                    intent.putExtra("sp_def", p.sp_def);
+                    intent.putExtra("species", p.species);
+                    intent.putExtra("speed", p.speed);
+                    intent.putExtra("total", p.total);
+                    intent.putExtra("type", p.type.toString());
+
+                    context.startActivity(intent);
+
+                }
+            });
         }
+
     }
 }
+

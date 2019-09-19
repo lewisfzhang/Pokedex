@@ -24,4 +24,6 @@
         <item>Fighting</item>
     </string-array>
     <string name="any">any</string>
+    <string name="choose_layout">test</string>
+    <string name="title_activity_pokemon_info">PokemonInfo</string>
 </resources>

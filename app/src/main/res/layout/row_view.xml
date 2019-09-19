@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="70dp">
+    android:layout_height="150dp">
 
-<!--Inside here you are definiing how you want each row of your recycler view to appear, this is super useful as it automatically
+    <!--Inside here you are definiing how you want each row of your recycler view to appear, this is super useful as it automatically
 applies this format to every single row of the recycler!-->
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -24,14 +24,33 @@ applies this format to every single row of the recycler!-->
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/number"
+                android:id="@+id/poke_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:text="TextView"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cardView5"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.504" />
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView5"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" >
+
+                <ImageView
+                    android:id="@+id/poke_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/pokeball" />
+            </android.support.v7.widget.CardView>
+
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 

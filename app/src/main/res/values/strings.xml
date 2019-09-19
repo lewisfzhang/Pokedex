@@ -1,6 +1,27 @@
 <resources>
-    <string name="app_name">Demo2</string>
+    <string name="app_name">Pokedex</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string-array name="type_array">
+        <item>Grass</item>
+        <item>Ice</item>
+        <item>Psychic</item>
+        <item>Dark</item>
+        <item>Bug</item>
+        <item>Steel</item>
+        <item>Ghost</item>
+        <item>Rock</item>
+        <item>Flying</item>
+        <item>Normal</item>
+        <item>Water</item>
+        <item>Dragon</item>
+        <item>Fairy</item>
+        <item>Poison</item>
+        <item>Electric</item>
+        <item>Fire</item>
+        <item>Ground</item>
+        <item>Fighting</item>
+    </string-array>
+    <string name="any">any</string>
 </resources>

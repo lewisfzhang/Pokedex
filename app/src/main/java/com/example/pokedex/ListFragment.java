@@ -1,4 +1,4 @@
-package com.example.demo2;
+package com.example.pokedex;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

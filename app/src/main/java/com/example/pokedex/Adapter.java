@@ -25,6 +25,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CustomViewHolder> {
     // It is helpful to have variable for context because `this` really only works when calling stuff from within Activities
     private Context context;
     List<Pokemon> data;
+    boolean listView = true; // default
 
     // Adapter construtor, whenever we make a new adapter from this class we need to pass in a context and the data that we want to bind
     Adapter(Context context, ArrayList<Pokemon> data) {

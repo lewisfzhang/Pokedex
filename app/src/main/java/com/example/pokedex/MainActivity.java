@@ -177,10 +177,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String[] type_options = {"Grass", "Ice", "Psychic", "Dark", "Bug", "Steel", "Ghost", "Rock",
                 "Flying", "Normal", "Water", "Dragon", "Fairy", "Poison", "Electric", "Fire", "Ground", "Fighting"};
         Log.d("i", Arrays.toString(type_selected));
-        for (int i=0; i<type_selected.length; i++) {
-            if (type_selected[i]) {
-                out = byType(type_selected, type_options, out);
-                Log.d("i", "Results remaining: "+out.size());
+
+        boolean all_true = true; // check to see if at least one type selection has been made
+        for (boolean b : type_selected) {
+            if (!b) all_true = false;
+        }
+        if (!all_true) {
+            for (int i = 0; i < type_selected.length; i++) {
+                if (type_selected[i]) {
+                    out = byType(type_selected, type_options, out);
+                    Log.d("i", "Results remaining: " + out.size());
+                }
             }
         }
         Log.d("a", out.toString());

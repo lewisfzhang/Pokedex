@@ -6,12 +6,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
@@ -35,10 +38,12 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     ImageView image;
     TextView name;
     Button back;
+    Switch toggleView;
 
     RecyclerView recycler;
     RecyclerView.LayoutManager linearManager;
     RecyclerView.LayoutManager gridManager;
+    RecyclerView.Adapter adapter;
     boolean is_linear_manager = true;
     // this is triggered soon after onCreateView() specifically when host activity has completed `onCreate()`, and any view setup should be done here
     @Override
@@ -59,12 +64,15 @@ public class ListFragment extends Fragment implements View.OnClickListener {
             data.add(mainActivity.list.get(i));
         }
 
+        toggleView = getView().findViewById(R.id.toggleView);
+        toggleView.setOnClickListener(this);
+
         // Setting up the RecyclerView
         recycler = getView().findViewById(R.id.recycler);
         linearManager = new LinearLayoutManager(getContext());
         gridManager = new GridLayoutManager(getContext(), 2);
         recycler.setLayoutManager(linearManager); // default layout is linear
-        RecyclerView.Adapter adapter = new Adapter(getContext(), data);
+        adapter = new Adapter(getContext(), data);
         recycler.setAdapter(adapter);
 
     }
@@ -75,16 +83,19 @@ public class ListFragment extends Fragment implements View.OnClickListener {
             case R.id.backButton:
                 getActivity().getSupportFragmentManager().popBackStackImmediate();
                 break;
+            case R.id.toggleView:
+                toggleLayout();
+                break;
         }
     }
 
-    private void toggleLayout(boolean use_linear_manager) {
-        if (!use_linear_manager && is_linear_manager) { // use grid and not already grid
+    private void toggleLayout() {
+        if (is_linear_manager) { // use grid
             recycler.setLayoutManager(gridManager);
             is_linear_manager = false;
-        } else if (use_linear_manager && !is_linear_manager) { // use linear and not already linear
+        } else { // use linear
             recycler.setLayoutManager(linearManager);
             is_linear_manager = true;
-        } // else do nothing
+        }
     }
 }

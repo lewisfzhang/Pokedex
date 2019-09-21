@@ -3,6 +3,7 @@ package com.example.pokedex;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,6 +35,11 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     ImageView image;
     TextView name;
     Button back;
+
+    RecyclerView recycler;
+    RecyclerView.LayoutManager linearManager;
+    RecyclerView.LayoutManager gridManager;
+    boolean is_linear_manager = true;
     // this is triggered soon after onCreateView() specifically when host activity has completed `onCreate()`, and any view setup should be done here
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -54,9 +60,10 @@ public class ListFragment extends Fragment implements View.OnClickListener {
         }
 
         // Setting up the RecyclerView
-        RecyclerView recycler = getView().findViewById(R.id.recycler);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());
-        recycler.setLayoutManager(manager);
+        recycler = getView().findViewById(R.id.recycler);
+        linearManager = new LinearLayoutManager(getContext());
+        gridManager = new GridLayoutManager(getContext(), 2);
+        recycler.setLayoutManager(linearManager); // default layout is linear
         RecyclerView.Adapter adapter = new Adapter(getContext(), data);
         recycler.setAdapter(adapter);
 
@@ -69,5 +76,15 @@ public class ListFragment extends Fragment implements View.OnClickListener {
                 getActivity().getSupportFragmentManager().popBackStackImmediate();
                 break;
         }
+    }
+
+    private void toggleLayout(boolean use_linear_manager) {
+        if (!use_linear_manager && is_linear_manager) { // use grid and not already grid
+            recycler.setLayoutManager(gridManager);
+            is_linear_manager = false;
+        } else if (use_linear_manager && !is_linear_manager) { // use linear and not already linear
+            recycler.setLayoutManager(linearManager);
+            is_linear_manager = true;
+        } // else do nothing
     }
 }

@@ -183,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.d("i", "Results remaining: "+out.size());
             }
         }
+        Log.d("a", out.toString());
         return out;
     }
 
@@ -241,13 +242,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<Integer> byType(boolean[] type_bool, String[] type_opt, ArrayList<Integer> idx) {
         ArrayList<Integer> arr = new ArrayList<>();
         for (int i : idx) {
-            if (oneType(type_bool, type_opt, list.get(i))) {
+            if (allTypes(type_bool, type_opt, list.get(i))) { // toggle between allTypes and oneType depending which one required by the project
                 arr.add(i); // add by index
             }
         }
         return arr;
     }
 
+    // pokemon must be all of the following types selected
+    private boolean allTypes(boolean[] type_bool, String[] type_opt, Pokemon p) {
+        for (int i=0; i<type_bool.length; i++) {
+            if (type_bool[i] && !p.isType(type_opt[i])) return false;
+        }
+        return true;
+    }
+
+    // pokemon only has to be one of the following types
     private boolean oneType(boolean[] type_bool, String[] type_opt, Pokemon p) {
         for (int i=0; i<type_bool.length; i++) {
             if (type_bool[i] && p.isType(type_opt[i])) return true;

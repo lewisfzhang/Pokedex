@@ -46,9 +46,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CustomViewHolder> {
     // Updates the `RecyclerView.ViewHolder` contents with the item at the given position (from your data)
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int i) {
+        String[] parts = data.get(i).name.split(" ");
+        // customViewHolder.name.setText(limitTextWidth(parts));
         customViewHolder.name.setText(data.get(i).name);
 
-        String[] parts = data.get(i).name.split(" ");
         String query = parts[0];
         if (parts.length > 1 && parts[1].equals("(")) query = String.format("%s-%s", query, parts[2]);
         String url = String.format("http://img.pokemondb.net/artwork/%s.jpg",query).toLowerCase();
@@ -60,6 +61,20 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CustomViewHolder> {
                 .error(R.drawable.pokeball) //6
                 .fallback(R.drawable.pokeball) //7
                 .into(itemView); //8
+    }
+
+    private String limitTextWidth(String[] parts) {
+        StringBuilder s = new StringBuilder();
+        int count = 0;
+        for (int i=0; i<parts.length; i++) {
+            s.append(parts[i]).append(" ");
+            count += parts[i].length();
+            if (!(i + 1 < parts.length && parts[i].equals(")")) && count >= 10) { // limit text width to 10
+                s.append(System.lineSeparator());
+                count = 0;
+            }
+        }
+        return s.toString();
     }
 
     // Must be overriden to explicitly tell your Recycler how much data to allocate space for (number of rows)
